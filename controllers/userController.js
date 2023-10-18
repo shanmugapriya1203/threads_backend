@@ -34,3 +34,48 @@ try {
     console.log("Error in signup:", error.message)
 }
 }
+
+export const loginUser = async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      
+      // Find the user based on the username
+      const user = await User.findOne({ username: username });
+  
+      if (!user) {
+        return res.status(400).json({ message: "Invalid username or password" });
+      }
+  
+      const isPasswordCorrect = await bcrypt.compare(password, user?.password);
+  
+      if (!isPasswordCorrect) {
+        return res.status(400).json({ message: "Invalid username or password" });
+      }
+  
+      generateTokenAndSetCookie(user._id, res);
+  
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        username: user.username,
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Error occurred" });
+      console.log("Error in login User", error.message);
+    }
+  };
+  
+  export const logoutUser= async(req,res)=>{
+    try {
+        res.cookie("jwt","",{maxAge:1})
+        res.status(200).json({message:"User logged out successfully"})
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+        console.log("Error in logout User", error.message);
+    }
+  }
+
+  export const followUnFollowUser= async(req,res)=>{
+
+  }
