@@ -1,6 +1,6 @@
 import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
-
+import mongoose from "mongoose";
 export const createPost = async (req, res) => {
   try {
     const { postedBy, text, img } = req.body;
@@ -126,4 +126,30 @@ export const replyPost= async(req,res)=>{
         console.error(error);
         res.status(500).json({ message: "Internal Server Error" });
     }
+}
+
+
+export const getFeedPosts= async(req,res)=>{
+    console.log(req.user)
+    return res.status(200).json({})
+  
+    // try {
+    //     const userId= req.user._id;
+    //     if(!mongoose.Types.ObjectId.isValid(userId)){
+    //         return res.status(400).json({message:"Invalid User Id"})
+    //     }
+    //     const user= await User.findById(userId)
+        
+    //     if(!user){
+    //         return res.status(404).json({message:"User Not found"})
+    //     }
+    //     const following=user.following;
+    //     const feedPosts= await Post.find({postedBy:{$in:following}}).sort({createdAt:-1})
+    //     console.log(req.u)
+
+    //     res.status(200).json({feedPosts})
+    // } catch (error) {
+    //     console.error(error);
+    //     res.status(500).json({ message: "Internal Server Error" });
+    // }
 }
