@@ -4,8 +4,8 @@ import protectRoute from './../middleware/protectRoute.js';
 const router= express.Router();
 
 router.post('/create',protectRoute,createPost)
-router.get('/:id',getPost)
-router.get('/feed',getFeedPosts)
+router.get('/getpost/:id',getPost)
+router.get('/feed',protectRoute,getFeedPosts)
 router.delete('/:id',protectRoute,deletePost)
 router.post("/like/:id",protectRoute,likeUnlikePost)
 router.post("/reply/:id",protectRoute,replyPost)

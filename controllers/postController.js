@@ -129,27 +129,22 @@ export const replyPost= async(req,res)=>{
 }
 
 
-export const getFeedPosts= async(req,res)=>{
-    console.log(req.user)
-    return res.status(200).json({})
-  
-    // try {
-    //     const userId= req.user._id;
-    //     if(!mongoose.Types.ObjectId.isValid(userId)){
-    //         return res.status(400).json({message:"Invalid User Id"})
-    //     }
-    //     const user= await User.findById(userId)
-        
-    //     if(!user){
-    //         return res.status(404).json({message:"User Not found"})
-    //     }
-    //     const following=user.following;
-    //     const feedPosts= await Post.find({postedBy:{$in:following}}).sort({createdAt:-1})
-    //     console.log(req.u)
+ export const getFeedPosts = async (req, res) => {
+	try {
+		const userId = req.user._id;
+		const user = await User.findById(userId);
+        console.log(user)
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
+		}
 
-    //     res.status(200).json({feedPosts})
-    // } catch (error) {
-    //     console.error(error);
-    //     res.status(500).json({ message: "Internal Server Error" });
-    // }
-}
+		const following = user.following;
+
+		const feedPosts = await Post.find({ postedBy: { $in: following } }).sort({ createdAt: -1 });
+
+		res.status(200).json({"FeedPosts":feedPosts});
+	} catch (err) {
+        console.log(err)
+		res.status(500).json({ error: err.message });
+	}
+};
