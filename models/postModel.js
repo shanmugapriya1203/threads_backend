@@ -13,7 +13,7 @@ const PostSchema= new mongoose.Schema({
     img:{
         type:String
     },
-    liked:{
+    likes:{
        //array of users
        type:[
         mongoose.Schema.Types.ObjectId

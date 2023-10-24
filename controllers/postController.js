@@ -74,3 +74,31 @@ return res.status(401).json({message:"Unauthorized to delete post"})
         res.status(500).json({ message: "Internal Server Error" }); 
     }
 }
+
+export const likeUnlikePost = async (req, res) => {
+    try {
+        const { id: postId } = req.params;
+        const userId = req.user._id;
+        const post = await Post.findById(postId);
+        
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+        
+        const userLikedPost = post.likes.includes(userId);
+        
+        if (userLikedPost) {
+          
+            post.likes.pull(userId);
+            await post.save();
+            res.status(200).json({ message: "Post unliked successfully" });
+        } else {
+            post.likes.push(userId);
+            await post.save(); 
+            res.status(200).json({ message: "Post liked successfully" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
