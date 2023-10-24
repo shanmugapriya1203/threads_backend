@@ -46,9 +46,31 @@ export const getPost= async(req,res)=>{
         {
             return res.status(404).json({message:"Post not Found"})
         }
-        res.status(500).json({message:"Post Found",post})
+        res.status(200).json({message:"Post Found",post})
     } catch (error) {
         console.error(error);
     res.status(500).json({ message: "Internal Server Error" }); 
+    }
+}
+
+
+export const deletePost= async(req,res)=>{
+    try {
+        const post= await Post.findById(req.params.id)
+        if(!post){
+            return res.status(404).json({message:"Post not found"})
+        }
+        if(post.postedBy.toString() !== req.user._id.toString()){
+return res.status(401).json({message:"Unauthorized to delete post"})
+    }   
+      await Post.findByIdAndDelete(req.params.id)
+      res.status(200).json({message:"Post Deleted Successfuly"})
+ }
+
+    
+    
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" }); 
     }
 }
