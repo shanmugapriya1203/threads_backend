@@ -7,7 +7,7 @@ import Post from './../models/postModel.js';
 
 export const getUserProfile = async (req, res) => {
   const { username } = req.params;
-  console.log("Username:", username); 
+
   try {
     const user = await User.findOne({ username }).select('-password -updatedAt');
     if (!user) {
