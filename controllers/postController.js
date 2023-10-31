@@ -5,7 +5,6 @@ export const createPost = async (req, res) => {
   try {
     const { postedBy, text } = req.body;
     let {img} =  req.body;
-
     if (!postedBy || !text) {
       return res.status(400).json({ error: "postedBy and text fields are required" });
     }
