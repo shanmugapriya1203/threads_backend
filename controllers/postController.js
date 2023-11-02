@@ -146,7 +146,7 @@ export const replyPost= async(req,res)=>{
 
 		const feedPosts = await Post.find({ postedBy: { $in: following } }).sort({ createdAt: -1 });
 
-		res.status(200).json({"FeedPosts":feedPosts});
+		res.status(200).json(feedPosts);
 	} catch (err) {
         console.log(err)
 		res.status(500).json({ error: err.message });
