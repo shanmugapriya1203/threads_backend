@@ -50,7 +50,7 @@ export const getPost= async(req,res)=>{
         {
             return res.status(404).json({error:"Post not Found"})
         }
-        res.status(200).json({message:"Post Found",post})
+        res.status(200).json({post})
     } catch (error) {
         console.error(error);
     res.status(500).json({ error: "Internal Server Error" }); 
@@ -141,7 +141,7 @@ export const replyPost= async(req,res)=>{
 	try {
 		const userId = req.user._id;
 		const user = await User.findById(userId);
-        console.log(user)
+      
 		if (!user) {
 			return res.status(404).json({ error: "User not found" });
 		}
@@ -166,6 +166,6 @@ export const replyPost= async(req,res)=>{
     const posts= await Post.find({postedBy:user._id}).sort({createdAt:-1})
     res.status(200).json(posts)
   } catch (error) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: error.message });
   }
  }
